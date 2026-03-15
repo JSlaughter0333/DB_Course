@@ -5,22 +5,28 @@ Simple key-focused database storage
 */
 //Importing packages
 import java.util.Scanner; //Useful for inputs
+import java.util.ArrayList; //for arraylist
 import java.io.*; //I/O interactions, which is important for file interaction
 
 //function prototypes
-private static void DBStartup();
-private static void setter(String, String);
-private static String getter(String);
+//private static void DBStartup();
+//private static void setter(String, String);
+//private static String getter(String);
 
 public class Main {
-  public static void main(String[] args) {
-    //initializing global arrays for keys and values
+   //initializing global arrays for keys and values
     public static ArrayList<String> keys = new ArrayList<>();
     public static ArrayList<String> values = new ArrayList<>();
+  
+  public static void main(String[] args) {
+    //initializing global arrays for keys and values
+    //public static ArrayList<String> keys = new ArrayList<>();
+    //public static ArrayList<String> values = new ArrayList<>();
     //Call startup function
     DBStartup();
 
     boolean flag = true;
+    Scanner scanner = new Scanner(System.in);
     while (flag) {
       /*
       Console gives info and checks for response
@@ -29,6 +35,19 @@ public class Main {
       SET and GET call respective functions and loops back
       EXIT ends program
       */
+      System.out.println("Please enter SET <key> <value>, GET <key>, or EXIT");
+      String input = scanner.nextLine();
+      String[] parts = input.split(" ", 3);
+      if (parts[0].equals("SET") && parts.length == 3) {
+        setter(parts[1], parts[2]);
+      } else if (parts[0].equals("GET") && parts.length == 2) {
+        getter(parts[1]);
+      } else if (parts[0].equals("EXIT")) {
+        System.out.println("Exit confirmed!");
+        flag = false;
+      } else {
+        System.out.println("Command was not identified as GET, SET, or EXIT. Please try again.");
+      }
     }
   }
     private static void DBStartup() {
@@ -41,20 +60,25 @@ public class Main {
       if key is present, change its value with the new value
       */
       String line;
-      while ((line = DB.readLine()) != NULL) {
+      while ((line = DB.readLine()) != null) {
         String[] parts = line.split(" ", 2);
         String key = parts[0];
         String value = parts[1];
 
         int index = keys.indexOf(key);
         if (index >= 0) {
+          //System.out.println("switching value for " + key + " to " + value);
           values.set(index, value);
         } else {
+          //System.out.println("Adding " + value + " to " + key + " key");
           keys.add(key);
           values.add(value);
         }
-      }
-      DB.close();
+      } //catch (IOException e) {
+        //System.out.println("Database file not found.");
+      //DB.close();
+    } catch (IOException e) {
+        System.out.println("Database file not found.");
     }
   }
 
@@ -75,6 +99,8 @@ public class Main {
       bw.newLine();
       bw.write(key + " " + value);
       bw.close();
+    } catch (IOException e) {
+      System.out.println("Error when writing to db");
     }
   }
   /*
@@ -86,7 +112,7 @@ public class Main {
     int index = keys.indexOf(key);
     if (index == -1) {
       System.out.println(key + " is not stored and thus has no value");
-      return NULL;
+      return null;
     } else {
       System.out.println("The value of key " + key + " is " + values.get(index));
       return values.get(index);
