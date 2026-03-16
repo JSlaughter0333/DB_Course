@@ -19,12 +19,10 @@ public class Main {
     public static ArrayList<String> values = new ArrayList<>();
   
   public static void main(String[] args) {
-    //initializing global arrays for keys and values
-    //public static ArrayList<String> keys = new ArrayList<>();
-    //public static ArrayList<String> values = new ArrayList<>();
     //Call startup function
     DBStartup();
 
+   //setting up for main interactivity + initializing scanner for input
     boolean flag = true;
     Scanner scanner = new Scanner(System.in);
     while (flag) {
@@ -64,7 +62,6 @@ public class Main {
         String[] parts = line.split(" ", 2);
         String key = parts[0];
         String value = parts[1];
-
         int index = keys.indexOf(key);
         if (index >= 0) {
           //System.out.println("switching value for " + key + " to " + value);
