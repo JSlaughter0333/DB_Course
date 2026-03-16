@@ -46,7 +46,7 @@ public class Main {
         //flag = false;
          break;
       } else {
-        System.out.println("Command was not identified as GET, SET, or EXIT. Please try again.");
+        //System.out.println("Command was not identified as GET, SET, or EXIT. Please try again.");
       }
     }
   }
