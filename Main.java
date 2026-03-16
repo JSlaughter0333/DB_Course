@@ -23,9 +23,10 @@ public class Main {
     DBStartup();
 
    //setting up for main interactivity + initializing scanner for input
-    boolean flag = true;
+    //boolean flag = true;
     Scanner scanner = new Scanner(System.in);
-    while (flag) {
+    //while (flag) {
+     while (scanner.hasNextLine()) {
       /*
       Console gives info and checks for response
       User can give either SET, GET, or EXIT - loops back if different
@@ -33,7 +34,7 @@ public class Main {
       SET and GET call respective functions and loops back
       EXIT ends program
       */
-      System.out.println("Please enter SET <key> <value>, GET <key>, or EXIT");
+      //System.out.println("Please enter SET <key> <value>, GET <key>, or EXIT");
       String input = scanner.nextLine();
       String[] parts = input.split(" ", 3);
       if (parts[0].equals("SET") && parts.length == 3) {
@@ -42,7 +43,8 @@ public class Main {
         getter(parts[1]);
       } else if (parts[0].equals("EXIT")) {
         System.out.println("Exit confirmed!");
-        flag = false;
+        //flag = false;
+         break;
       } else {
         System.out.println("Command was not identified as GET, SET, or EXIT. Please try again.");
       }
@@ -59,7 +61,13 @@ public class Main {
       */
       String line;
       while ((line = DB.readLine()) != null) {
+        if (line.isBlank()) {
+           continue;
+        }
         String[] parts = line.split(" ", 2);
+        if (parts.length < 2) {
+            continue;
+        }
         String key = parts[0];
         String value = parts[1];
         int index = keys.indexOf(key);
@@ -93,8 +101,9 @@ public class Main {
     }
     //https://www.w3schools.com/JAVA/java_bufferedwriter.asp, add ", true" to enable append mode
     try(BufferedWriter bw = new BufferedWriter(new FileWriter("data.db", true))) {
-      bw.newLine();
+      //bw.newLine();
       bw.write(key + " " + value);
+      bw.newLine();
       bw.close();
     } catch (IOException e) {
       System.out.println("Error when writing to db");
@@ -108,10 +117,10 @@ public class Main {
   private static String getter(String key) {
     int index = keys.indexOf(key);
     if (index == -1) {
-      System.out.println(key + " is not stored and thus has no value");
+      System.out.println();
       return null;
     } else {
-      System.out.println("The value of key " + key + " is " + values.get(index));
+      System.out.println(values.get(index));
       return values.get(index);
     }
   } 
